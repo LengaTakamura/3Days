@@ -49,7 +49,12 @@ public class GameSystem : MonoBehaviour
         {
             _superChatQueue.Enqueue(_superChatTimesList[i]);
         }
-        _superChatTime = _superChatQueue.Dequeue();
+
+        if (_superChatQueue != null)
+        {
+            _superChatTime = _superChatQueue.Dequeue();
+        }
+
         Invoke("GameStart", _untilStartTime);
     }
 
@@ -73,7 +78,7 @@ public class GameSystem : MonoBehaviour
         if (_limitTime <= _superChatTime && !_isChatTime)
         {
             SuperChatTime();
-            _superChatFinishTime -= Time.deltaTime;           
+            _superChatFinishTime -= Time.deltaTime;
             if (_superChatFinishTime < 0 && _isChat)
             {
                 SuperChatTimeFinish();
