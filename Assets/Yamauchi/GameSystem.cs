@@ -21,7 +21,7 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private ScoreManager _scoreManager;
 
     private bool _isChatTime = false;
-    private bool _isChat = false;
+    private bool _isChatTimeFinish = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
     private bool _isStart = false;//ゲームが始まったらtrueにする
     private Queue<float> _superChatQueue = new Queue<float>();//_superChatTimesListを入れる
@@ -45,12 +45,12 @@ public class GameSystem : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < _superChatQueue.Count; i++)
+        for (int i = 0; i < _superChatTimesList.Count; i++)
         {
             _superChatQueue.Enqueue(_superChatTimesList[i]);
         }
 
-        if (_superChatQueue != null)
+        if (_superChatQueue.Count >= 1)
         {
             _superChatTime = _superChatQueue.Peek();
         }
@@ -77,10 +77,12 @@ public class GameSystem : MonoBehaviour
         //スパチャの時間になったら呼ぶ
         if (_limitTime <= _superChatTime && !_isChatTime)
         {
+            _isChatTime = true;
             SuperChatTimerStart();
             _superChatFinishTime -= Time.deltaTime;
-            if (_superChatFinishTime < 0 && _isChat)
+            if (_superChatFinishTime < 0 && !_isChatTimeFinish)
             {
+                _isChatTimeFinish = true;
                 SuperChatTimeFinish();
             }
         }
@@ -108,13 +110,11 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimerStart()
     {
-        if (_superChatQueue != null)
+        if (_superChatQueue.Count >= 1)
         {
             ChangeState(InstructionStamp.None, _sprite[0]);
             _superChatQueue.Dequeue();
             _superChatTime = _superChatQueue.Peek();
-            _isChat = true;
-            _isChatTime = true;
         }
     }
 
@@ -123,10 +123,9 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimeFinish()
     {
-        if (_superChatQueue != null)
+        if (_superChatQueue.Count >= 1)
         {
             Display();
-            _isChat = false;
             _isChatTime = false;
         }
     }
