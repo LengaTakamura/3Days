@@ -52,7 +52,7 @@ public class GameSystem : MonoBehaviour
 
         if (_superChatQueue != null)
         {
-            _superChatTime = _superChatQueue.Dequeue();
+            _superChatTime = _superChatQueue.Peek();
         }
 
         Invoke("GameStart", _untilStartTime);
@@ -108,9 +108,14 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTime()
     {
-        ChangeState(InstructionStamp.None, _sprite[0]);
-        _isChat = true;
-        _isChatTime = true;
+        if (_superChatQueue != null)
+        {
+            ChangeState(InstructionStamp.None, _sprite[0]);
+            _superChatQueue.Dequeue();
+            _superChatTime = _superChatQueue.Peek();
+            _isChat = true;
+            _isChatTime = true;
+        }
     }
 
     /// <summary>
@@ -118,10 +123,12 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimeFinish()
     {
-        Display();
-        _superChatTime = _superChatQueue.Dequeue();
-        _isChat = false;
-        _isChatTime = false;
+        if (_superChatQueue != null)
+        {
+            Display();
+            _isChat = false;
+            _isChatTime = false;
+        }
     }
 
     /// <summary>
