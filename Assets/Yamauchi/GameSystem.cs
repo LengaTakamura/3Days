@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,10 +9,10 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private int _untilStartTime = 5;
     [Header("制限時間")]
     [SerializeField] private float _limitTime;
-    [Header("連打時間")]
-    [SerializeField] private float _pressTime;
-    [Header("連打のインターバル")]
-    [SerializeField] private float _intervalTime;
+    [Header("スパチャまでの時間")]
+    [SerializeField] private List<float> _superChatTimesList = new List<float>();
+    [Header("スパチャする時間")]
+    [SerializeField] private float _superChatFinishTime;
     [Header("顔グラを表示するImage")]
     [SerializeField] private Image _graphicImage;
     [Header("SpriteのList")]
@@ -19,7 +20,11 @@ public class GameSystem : MonoBehaviour
     [Header("ScoreManager")]
     [SerializeField] private ScoreManager _scoreManager;
 
+    private bool _isChat = false;
+    private bool _isFinish = false;//一回だけGameFinishを呼ぶ
     private bool _isStart = false;//ゲームが始まったらtrueにする
+    private Queue<float> _superChatQueue = new Queue<float>();//_superChatTimesListを入れる
+    private float _superChatTime = 0;
     private InstructionStamp _instructionStamp;
 
     private Action _onStart;//連打が始まったら呼ぶ
@@ -39,6 +44,11 @@ public class GameSystem : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < _superChatQueue.Count; i++)
+        {
+            _superChatQueue.Enqueue(_superChatTimesList[i]);
+        }
+        _superChatTime = _superChatQueue.Dequeue();
         Invoke("GameStart", _untilStartTime);
     }
 
@@ -51,18 +61,19 @@ public class GameSystem : MonoBehaviour
 
         //時間計測
         _limitTime -= Time.deltaTime;
-        if (_limitTime < 0)
+        if (_limitTime < 0 && !_isFinish)
         {
+            _isFinish = true;
             GameFinish();
         }
 
-        //スパチャまでのインターバル
-        _intervalTime -= Time.deltaTime;
-        if (_intervalTime < 0)
+
+        //スパチャの時間になったら呼ぶ
+        if (_limitTime == _superChatTime)
         {
-            SuperChatTime();//スパチャ開始
-            _pressTime -= Time.deltaTime;
-            if (_pressTime < 0)
+            _superChatFinishTime -= Time.deltaTime;
+            SuperChatTime();
+            if (_superChatFinishTime < 0 && _isChat)
             {
                 SuperChatTimeFinish();
             }
@@ -92,6 +103,7 @@ public class GameSystem : MonoBehaviour
     private void SuperChatTime()
     {
         ChangeState(InstructionStamp.None, _sprite[0]);
+        _isChat = true;
     }
 
     /// <summary>
@@ -100,8 +112,8 @@ public class GameSystem : MonoBehaviour
     private void SuperChatTimeFinish()
     {
         Display();
-        _pressTime = default;
-        _intervalTime = default;
+        _superChatTime = _superChatQueue.Dequeue();
+        _isChat = false;
     }
 
     /// <summary>
@@ -144,7 +156,7 @@ public class GameSystem : MonoBehaviour
         bool result = ins == _instructionStamp ? true : false;
         if (result)
         {
-            _scoreManager.AddScore();
+            _scoreManager.AddScoreStamp();
         }
         else
         {
