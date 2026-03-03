@@ -77,7 +77,7 @@ public class GameSystem : MonoBehaviour
         //スパチャの時間になったら呼ぶ
         if (_limitTime <= _superChatTime && !_isChatTime)
         {
-            SuperChatTime();
+            SuperChatTimerStart();
             _superChatFinishTime -= Time.deltaTime;
             if (_superChatFinishTime < 0 && _isChat)
             {
@@ -106,7 +106,7 @@ public class GameSystem : MonoBehaviour
     /// <summary>
     /// スパチャの時のInputを呼ぶ
     /// </summary>
-    private void SuperChatTime()
+    private void SuperChatTimerStart()
     {
         if (_superChatQueue != null)
         {
