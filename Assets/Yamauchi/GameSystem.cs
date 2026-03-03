@@ -20,6 +20,7 @@ public class GameSystem : MonoBehaviour
     [Header("ScoreManager")]
     [SerializeField] private ScoreManager _scoreManager;
 
+    private bool _isChatTime = false;
     private bool _isChat = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
     private bool _isStart = false;//ゲームが始まったらtrueにする
@@ -69,10 +70,10 @@ public class GameSystem : MonoBehaviour
 
 
         //スパチャの時間になったら呼ぶ
-        if (_limitTime == _superChatTime)
+        if (_limitTime <= _superChatTime && !_isChatTime)
         {
-            _superChatFinishTime -= Time.deltaTime;
             SuperChatTime();
+            _superChatFinishTime -= Time.deltaTime;           
             if (_superChatFinishTime < 0 && _isChat)
             {
                 SuperChatTimeFinish();
@@ -104,6 +105,7 @@ public class GameSystem : MonoBehaviour
     {
         ChangeState(InstructionStamp.None, _sprite[0]);
         _isChat = true;
+        _isChatTime = true;
     }
 
     /// <summary>
@@ -114,6 +116,7 @@ public class GameSystem : MonoBehaviour
         Display();
         _superChatTime = _superChatQueue.Dequeue();
         _isChat = false;
+        _isChatTime = false;
     }
 
     /// <summary>
