@@ -41,4 +41,12 @@ public class InputBarrage : MonoBehaviour
         // ScoreManager.Instance.AddScore(_count);
         return _count;
     }
+
+    public void OnClicked()
+    {
+        if (_canPress)
+        {
+            _count++;
+        }
+    }
 }
