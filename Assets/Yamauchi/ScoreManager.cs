@@ -6,6 +6,11 @@ public class ScoreManager : MonoBehaviour
 
     public int Score => _score;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     /// <summary>
     /// スタンプ用
     /// </summary>
