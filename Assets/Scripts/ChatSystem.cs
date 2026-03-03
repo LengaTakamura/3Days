@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class ChatSystem : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _objList = new();
-    [SerializeField] private float _interval = 3f;
+    [SerializeField] private float _minInterval = 0.1f;
+    [SerializeField] private float _maxInterval = 3f;
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
 
     private Queue<GameObject> _activeObjects = new();
@@ -37,7 +38,7 @@ public class ChatSystem : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(_interval);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(_minInterval,_maxInterval));
             UpdateChat();
         }
     }
