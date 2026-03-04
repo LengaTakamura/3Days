@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,9 +38,10 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private InputStamp _inputStamp;
     [Header("InputBarrage")]
     [SerializeField] private InputBarrage _inputBarrage;
+    [Header("ButtonのList")]
+    [SerializeField] private Button[] _buttonList;
 
     private bool _isChatTime = false;
-    private bool _isChatTimeFinish = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
     private bool _isStart = false;//ゲームが始まったらtrueにする
     private Queue<float> _superChatQueue = new Queue<float>();//_superChatTimesListを入れる
@@ -105,13 +107,14 @@ public class GameSystem : MonoBehaviour
         {
             _isChatTime = true;
             SuperChatTimerStart();
-            _superChatFinishTime -= Time.deltaTime;
-            if (_superChatFinishTime < 0 && !_isChatTimeFinish)
-            {
-                _isChatTimeFinish = true;
-                SuperChatTimeFinish();
-            }
+            StartCoroutine(SuperChatTimeWait());
         }
+    }
+
+    IEnumerator SuperChatTimeWait()
+    {
+        yield return new WaitForSeconds(_superChatFinishTime);
+        SuperChatTimeFinish();
     }
 
     private void ConvertTime(float currentTime)
@@ -142,13 +145,19 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimerStart()
     {
-        if (_superChatQueue.Count >= 1)
+        if (_superChatQueue.Count > 0)
         {
+            foreach (var button in _buttonList)
+            {
+                button.interactable = false;
+            }
+
             _onStart?.Invoke();
             _speechBallonImage.sprite = _speechBallonSprite[1];//スパチャの時の吹き出し
             ChangeState(InstructionStamp.None, _faceSprite[0]);
             ChangeDialogue(_dialogueString[0]);
             _superChatQueue.Dequeue();
+            if (_superChatQueue.Count == 0) return;
             _superChatTime = _superChatQueue.Peek();
         }
     }
@@ -158,12 +167,16 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimeFinish()
     {
-        if (_superChatQueue.Count >= 1)
+        Debug.Log("終了");
+
+        foreach (var button in _buttonList)
         {
-            _onEnd?.Invoke();
-            Display();
-            _isChatTime = false;
+            button.interactable = true;
         }
+
+        _onEnd?.Invoke();
+        Display();
+        _isChatTime = false;
     }
 
     /// <summary>
@@ -212,6 +225,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void JudgeState(InstructionStamp ins)
     {
+
         bool result = ins == _instructionStamp ? true : false;
         if (result)
         {
@@ -221,6 +235,7 @@ public class GameSystem : MonoBehaviour
         {
             ScoreManager.Instance.DecreaseScore();
         }
+        Display();
     }
 }
 

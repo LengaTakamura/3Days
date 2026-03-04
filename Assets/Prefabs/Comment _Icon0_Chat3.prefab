@@ -128,6 +128,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Icon0_Chat1
       objectReference: {fileID: 0}
+    - target: {fileID: 6029389865148807999, guid: bf5f63dd2aa2ea546ad29457e89f3d48, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3115339346308790870, guid: 17c284b6da0bd5b4d9936b616597ad05, type: 3}
     - target: {fileID: 8362535645600602233, guid: bf5f63dd2aa2ea546ad29457e89f3d48, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1039
