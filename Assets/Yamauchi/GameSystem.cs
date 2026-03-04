@@ -9,6 +9,8 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private int _untilStartTime = 5;
     [Header("制限時間")]
     [SerializeField] private float _limitTime;
+    [Header("制限時間のSlider")]
+    [SerializeField] private Slider _timeSlider;
     [Header("スパチャまでの時間")]
     [SerializeField] private List<float> _superChatTimesList = new List<float>();
     [Header("スパチャする時間")]
@@ -26,6 +28,8 @@ public class GameSystem : MonoBehaviour
     private bool _isStart = false;//ゲームが始まったらtrueにする
     private Queue<float> _superChatQueue = new Queue<float>();//_superChatTimesListを入れる
     private float _superChatTime = 0;
+    private float _limitTimeMax = 0;
+    private float _plusTime = 0;
     private InstructionStamp _instructionStamp;
 
     private Action _onStart;//連打が始まったら呼ぶ
@@ -45,6 +49,7 @@ public class GameSystem : MonoBehaviour
 
     private void Start()
     {
+        _limitTimeMax = _limitTime;
         for (int i = 0; i < _superChatTimesList.Count; i++)
         {
             _superChatQueue.Enqueue(_superChatTimesList[i]);
@@ -73,6 +78,9 @@ public class GameSystem : MonoBehaviour
             GameFinish();
         }
 
+        //Slider操作
+        _plusTime += Time.deltaTime;
+        ConvertTime(_plusTime);
 
         //スパチャの時間になったら呼ぶ
         if (_limitTime <= _superChatTime && !_isChatTime)
@@ -86,6 +94,14 @@ public class GameSystem : MonoBehaviour
                 SuperChatTimeFinish();
             }
         }
+    }
+
+    private void ConvertTime(float currentTime)
+    {
+        float convertLimitTime = Mathf.Clamp01(_limitTimeMax);
+        float convertPlusTime = Mathf.Clamp01(currentTime);
+        float ratio = convertPlusTime / convertLimitTime;
+        _timeSlider.value = Mathf.Lerp(convertPlusTime, convertLimitTime, ratio);
     }
 
     /// <summary>
