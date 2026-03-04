@@ -1235,7 +1235,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -1274,17 +1274,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objList:
-  - {fileID: 8628062585772370689, guid: 1d05e6aa528321d40aa6f918fa8370cf, type: 3}
-  - {fileID: 5288319537709057430, guid: bf5f63dd2aa2ea546ad29457e89f3d48, type: 3}
-  - {fileID: 2127186555955513706, guid: 458708e0272e033498e2fa37790d20c5, type: 3}
-  - {fileID: 7261591473949610640, guid: 5ad75f4190ba2214d9616669ccbb82cc, type: 3}
-  - {fileID: 2746621075217398009, guid: 2f18962c67bb0cc4982483648a5598e8, type: 3}
-  - {fileID: 2484590229235801773, guid: 0e22db83206898e4b9635d0b2b1f4417, type: 3}
-  - {fileID: 1799438053184662342, guid: eac60318ce45a0e4bb1217edd448d9cc, type: 3}
-  - {fileID: 7145380393450605727, guid: 0719fcf425f69c94593d3323089bc46d, type: 3}
+  - {fileID: 3045637474538976107, guid: f165aad50635ef344a6c2b23d257f827, type: 3}
+  - {fileID: 6303107235877872809, guid: 9619ebe99ca01914d8a8cbf4e4ba4b40, type: 3}
+  - {fileID: 3045637474538976107, guid: 0cce2fce4da3df643a1b196050f37e39, type: 3}
   _minInterval: 0.1
   _maxInterval: 3
   _layoutGroup: {fileID: 1889973859}
+  _chatNum: 8
+  _sprites:
+  - {fileID: 8701271187640215789, guid: 1e3dba06061d17642abb63a918382577, type: 3}
+  - {fileID: -5483400097784814731, guid: d1638d0ba9ae15e48b9535a76ef9ba69, type: 3}
+  - {fileID: 4644161115533663451, guid: 7eea05b2b3bccd94888ee85c9856b767, type: 3}
+  - {fileID: 5583424242236225717, guid: 2e79167b262ce8b47a204fb3e36b30f1, type: 3}
+  - {fileID: -2522706899676461125, guid: d739eceeb1f3d1348af2bd18324dff00, type: 3}
+  - {fileID: -8864870092993507064, guid: 076911885a4fc6441985aa7fe8bf37a9, type: 3}
 --- !u!4 &1983258085
 Transform:
   m_ObjectHideFlags: 0
