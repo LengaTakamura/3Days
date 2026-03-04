@@ -144,7 +144,7 @@ public class GameSystem : MonoBehaviour
     {
         if (_superChatQueue.Count >= 1)
         {
-            _onStart.Invoke();
+            _onStart?.Invoke();
             _speechBallonImage.sprite = _speechBallonSprite[1];//スパチャの時の吹き出し
             ChangeState(InstructionStamp.None, _faceSprite[0]);
             ChangeDialogue(_dialogueString[0]);
@@ -160,7 +160,7 @@ public class GameSystem : MonoBehaviour
     {
         if (_superChatQueue.Count >= 1)
         {
-            _onEnd.Invoke();
+            _onEnd?.Invoke();
             Display();
             _isChatTime = false;
         }
