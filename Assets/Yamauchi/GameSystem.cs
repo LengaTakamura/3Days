@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ゲームマネージャーです
+/// セリフ、顔グラ、吹き出しのSpriteリストの0番目にはスパチャ時のものを入れてください
+/// 吹き出しのSpriteリストの1番目には普段のものを入れてください
+/// 対応するセリフ、顔グラのSpriteリストのインデックスは同じ数になるようにしてください
+/// </summary>
 public class GameSystem : MonoBehaviour
 {
     [Header("ゲームがスタートするまでの秒数")]
@@ -20,10 +26,17 @@ public class GameSystem : MonoBehaviour
     [Header("顔グラのList")]
     [SerializeField] private Sprite[] _faceSprite;
     [Header("吹き出しを表示するImage")]
-    [SerializeField]private Image _speechBallonImage;
-
-    [Header("ScoreManager")]
-    [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private Image _speechBallonImage;
+    [Header("吹き出しを表示するSprite")]
+    [SerializeField] private Sprite[] _speechBallonSprite;
+    [Header("セリフ表示用Text")]
+    [SerializeField] private Text _dialogueText;
+    [Header("セリフを入れる文字列")]
+    [SerializeField] private string[] _dialogueString;
+    [Header("InputStamp")]
+    [SerializeField] private InputStamp _inputStamp;
+    [Header("InputBarrage")]
+    [SerializeField] private InputBarrage _inputBarrage;
 
     private bool _isChatTime = false;
     private bool _isChatTimeFinish = false;
@@ -36,19 +49,20 @@ public class GameSystem : MonoBehaviour
     private InstructionStamp _instructionStamp;
 
     private Action _onStart;//連打が始まったら呼ぶ
-    private Action _onEnd;//連打が終わったら呼ぶ
+    private Func<int> _onEnd;//連打が終わったら呼ぶ
 
     private void OnEnable()
     {
-        //_onStart+=
-        //_onEnd+=
-        Debug.Log("a");
+        _inputStamp.OnStampClicked += JudgeState;
+        _onStart += _inputBarrage.OnStart;
+        _onEnd += _inputBarrage.OnEnd;
     }
 
     private void OnDisable()
     {
-        //_onStart-=
-        //_onEnd-=
+        _inputStamp.OnStampClicked -= JudgeState;
+        _onStart -= _inputBarrage.OnStart;
+        _onEnd -= _inputBarrage.OnEnd;
     }
 
     private void Start()
@@ -130,7 +144,10 @@ public class GameSystem : MonoBehaviour
     {
         if (_superChatQueue.Count >= 1)
         {
+            _onStart.Invoke();
+            _speechBallonImage.sprite = _speechBallonSprite[1];//スパチャの時の吹き出し
             ChangeState(InstructionStamp.None, _faceSprite[0]);
+            ChangeDialogue(_dialogueString[0]);
             _superChatQueue.Dequeue();
             _superChatTime = _superChatQueue.Peek();
         }
@@ -143,29 +160,34 @@ public class GameSystem : MonoBehaviour
     {
         if (_superChatQueue.Count >= 1)
         {
+            _onEnd.Invoke();
             Display();
             _isChatTime = false;
         }
     }
 
     /// <summary>
-    /// 顔グラの表示切り替え
+    /// 顔グラの表示とセリフ切り替え
     /// </summary>
     private void Display()
     {
+        _speechBallonImage.sprite = _speechBallonSprite[0];//普段の吹き出し
         InstructionStamp[] instructionStampArray = (InstructionStamp[])Enum.GetValues(typeof(InstructionStamp));//顔グラを選ぶ
         InstructionStamp currentStamp = instructionStampArray[UnityEngine.Random.Range(1, instructionStampArray.Length)];//現在の顔グラを記録    
         if (currentStamp == InstructionStamp.TypeA)
         {
             ChangeState(InstructionStamp.TypeA, _faceSprite[1]);
+            ChangeDialogue(_dialogueString[1]);
         }
         else if (currentStamp == InstructionStamp.TypeB)
         {
             ChangeState(InstructionStamp.TypeB, _faceSprite[2]);
+            ChangeDialogue(_dialogueString[2]);
         }
         else if (currentStamp == InstructionStamp.TypeC)
         {
             ChangeState(InstructionStamp.TypeC, _faceSprite[3]);
+            ChangeDialogue(_dialogueString[3]);
         }
     }
 
@@ -180,6 +202,11 @@ public class GameSystem : MonoBehaviour
         _faceGraphicImage.sprite = spr;
     }
 
+    private void ChangeDialogue(string dialogue)
+    {
+        _dialogueText.text = dialogue;
+    }
+
     /// <summary>
     /// スタンプの正誤判定
     /// </summary>
@@ -188,11 +215,11 @@ public class GameSystem : MonoBehaviour
         bool result = ins == _instructionStamp ? true : false;
         if (result)
         {
-            _scoreManager.AddScoreStamp();
+            ScoreManager.Instance.AddScoreStamp();
         }
         else
         {
-            _scoreManager.DecreaseScore();
+            ScoreManager.Instance.DecreaseScore();
         }
     }
 }
