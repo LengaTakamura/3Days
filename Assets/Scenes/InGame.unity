@@ -1155,7 +1155,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -1201,6 +1201,13 @@ MonoBehaviour:
   _maxInterval: 3
   _layoutGroup: {fileID: 1889973859}
   _chatNum: 8
+  _sprites:
+  - {fileID: 8701271187640215789, guid: 1e3dba06061d17642abb63a918382577, type: 3}
+  - {fileID: -5483400097784814731, guid: d1638d0ba9ae15e48b9535a76ef9ba69, type: 3}
+  - {fileID: 4644161115533663451, guid: 7eea05b2b3bccd94888ee85c9856b767, type: 3}
+  - {fileID: 5583424242236225717, guid: 2e79167b262ce8b47a204fb3e36b30f1, type: 3}
+  - {fileID: -2522706899676461125, guid: d739eceeb1f3d1348af2bd18324dff00, type: 3}
+  - {fileID: -8864870092993507064, guid: 076911885a4fc6441985aa7fe8bf37a9, type: 3}
 --- !u!4 &1983258085
 Transform:
   m_ObjectHideFlags: 0
