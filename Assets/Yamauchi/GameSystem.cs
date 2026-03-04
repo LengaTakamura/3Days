@@ -42,6 +42,7 @@ public class GameSystem : MonoBehaviour
     {
         //_onStart+=
         //_onEnd+=
+        Debug.Log("a");
     }
 
     private void OnDisable()
