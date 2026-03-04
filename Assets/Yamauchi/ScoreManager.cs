@@ -4,10 +4,17 @@ public class ScoreManager : MonoBehaviour
 {
     private static int _score = 0;//ƒXƒRƒA
 
+    public static ScoreManager Instance { get; private set; }
     public int Score => _score;
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
