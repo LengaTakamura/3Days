@@ -98,10 +98,8 @@ public class GameSystem : MonoBehaviour
 
     private void ConvertTime(float currentTime)
     {
-        float convertLimitTime = Mathf.Clamp01(_limitTimeMax);
-        float convertPlusTime = Mathf.Clamp01(currentTime);
-        float ratio = convertPlusTime / convertLimitTime;
-        _timeSlider.value = Mathf.Lerp(convertPlusTime, convertLimitTime, ratio);
+        float ratio = Mathf.Clamp01(currentTime / _limitTimeMax);
+        _timeSlider.value = ratio;
     }
 
     /// <summary>
