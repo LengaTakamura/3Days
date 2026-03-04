@@ -9,23 +9,18 @@ public class ImproveTitle : MonoBehaviour
     [SerializeField] private bool _isRight;
     [Header("動く速さ")]
     [SerializeField] private int _moveSpeed;
-
-    private bool _isMove = false;//マウスが押されたらtrueにする
+    [SerializeField] private bool _isClicked = false;//クリックされたらtrueにする
+    //private bool _isMove = false;//マウスが押されたらtrueにする
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !_isMove)
+        if (Input.GetMouseButtonDown(0) && !_isClicked)
         {
-            _isMove = true;     
+            //マウスが押されたら
+            _isClicked = true;
+            //シーンを切り替える
+            SceneController.instance.OnClickFadeIn("InGame");
         }
-
-        if (_isRight && _isMove)
-        {
-            this.transform.Translate(_moveSpeed * Time.deltaTime, 0, 0);
-        }
-        else if (!_isRight && _isMove)
-        {
-            this.transform.Translate(-_moveSpeed * Time.deltaTime, 0, 0);
-        }
+        
     }
 }
