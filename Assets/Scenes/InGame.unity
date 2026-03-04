@@ -1196,8 +1196,7 @@ MonoBehaviour:
   _objList:
   - {fileID: 3045637474538976107, guid: f165aad50635ef344a6c2b23d257f827, type: 3}
   - {fileID: 6303107235877872809, guid: 9619ebe99ca01914d8a8cbf4e4ba4b40, type: 3}
-  - {fileID: 1977011991379404890, guid: 9fb4b03248bb17f4891d8b5030c9c1ba, type: 3}
-  - {fileID: 1753141425618935366, guid: c879161d67aa1cd448844d97e9f79f12, type: 3}
+  - {fileID: 3045637474538976107, guid: 0cce2fce4da3df643a1b196050f37e39, type: 3}
   _minInterval: 0.1
   _maxInterval: 3
   _layoutGroup: {fileID: 1889973859}
