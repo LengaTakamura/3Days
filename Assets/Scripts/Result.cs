@@ -6,13 +6,12 @@ public class Result : MonoBehaviour
 {
     [SerializeField] private List<Sprite> _sprites;
     [SerializeField] private List<int> _count;
-    private ScoreManager _score;
     private Image _image;
     [SerializeField] private Text _text;
 
-    public void Start()
+    private void Start()
     {
-        var score = _score.Score;
+        var score = ScoreManager.Instance.Score;
         _image = GetComponent<Image>();
 
         if (score > 10)
