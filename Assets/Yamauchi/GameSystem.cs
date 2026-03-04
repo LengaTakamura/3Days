@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,35 +14,52 @@ public class GameSystem : MonoBehaviour
     [Header("スパチャまでの時間")]
     [SerializeField] private List<float> _superChatTimesList = new List<float>();
     [Header("スパチャする時間")]
-    [SerializeField] private float _superChatDuration = 5.0f; // スパチャの継続時間
+    [SerializeField] private float _superChatFinishTime;
     [Header("顔グラを表示するImage")]
-    [SerializeField] private Image _graphicImage;
-    [Header("SpriteのList")]
-    [SerializeField] private Sprite[] _sprite;
+    [SerializeField] private Image _faceGraphicImage;
+    [Header("顔グラのList")]
+    [SerializeField] private Sprite[] _faceSprite;
+    [Header("吹き出しを表示するImage")]
+    [SerializeField]private Image _speechBallonImage;
+
     [Header("ScoreManager")]
     [SerializeField] private ScoreManager _scoreManager;
 
     private bool _isChatTime = false;
-    private bool _isFinish = false;
-    private bool _isStart = false;
-    private Queue<float> _superChatQueue = new Queue<float>();
-    private float _superChatTime = -1.0f;
-    private float _superChatTimer = 0; // カウントダウン用
+    private bool _isChatTimeFinish = false;
+    private bool _isFinish = false;//一回だけGameFinishを呼ぶ
+    private bool _isStart = false;//ゲームが始まったらtrueにする
+    private Queue<float> _superChatQueue = new Queue<float>();//_superChatTimesListを入れる
+    private float _superChatTime = 0;
     private float _limitTimeMax = 0;
     private float _plusTime = 0;
     private InstructionStamp _instructionStamp;
 
+    private Action _onStart;//連打が始まったら呼ぶ
+    private Action _onEnd;//連打が終わったら呼ぶ
+
+    private void OnEnable()
+    {
+        //_onStart+=
+        //_onEnd+=
+        Debug.Log("a");
+    }
+
+    private void OnDisable()
+    {
+        //_onStart-=
+        //_onEnd-=
+    }
+
     private void Start()
     {
         _limitTimeMax = _limitTime;
-        
-        // ListからQueueへコピー
-        foreach (float t in _superChatTimesList)
+        for (int i = 0; i < _superChatTimesList.Count; i++)
         {
-            _superChatQueue.Enqueue(t);
+            _superChatQueue.Enqueue(_superChatTimesList[i]);
         }
 
-        if (_superChatQueue.Count > 0)
+        if (_superChatQueue.Count >= 1)
         {
             _superChatTime = _superChatQueue.Peek();
         }
@@ -52,9 +69,12 @@ public class GameSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!_isStart || _isFinish) return;
+        if (!_isStart)
+        {
+            return;
+        }
 
-        // 全体の時間計測
+        //時間計測
         _limitTime -= Time.deltaTime;
         if (_limitTime < 0 && !_isFinish)
         {
@@ -62,22 +82,19 @@ public class GameSystem : MonoBehaviour
             GameFinish();
         }
 
-        // Slider操作
+        //Slider操作
         _plusTime += Time.deltaTime;
         ConvertTime(_plusTime);
 
-        // スパチャの発生チェック
-        if (!_isChatTime && _limitTime <= _superChatTime)
+        //スパチャの時間になったら呼ぶ
+        if (_limitTime <= _superChatTime && !_isChatTime)
         {
+            _isChatTime = true;
             SuperChatTimerStart();
-        }
-
-        // スパチャ中のカウントダウン処理
-        if (_isChatTime)
-        {
-            _superChatTimer -= Time.deltaTime;
-            if (_superChatTimer <= 0)
+            _superChatFinishTime -= Time.deltaTime;
+            if (_superChatFinishTime < 0 && !_isChatTimeFinish)
             {
+                _isChatTimeFinish = true;
                 SuperChatTimeFinish();
             }
         }
@@ -85,57 +102,108 @@ public class GameSystem : MonoBehaviour
 
     private void ConvertTime(float currentTime)
     {
-        if (_timeSlider != null)
-        {
-            float ratio = Mathf.Clamp01(currentTime / _limitTimeMax);
-            _timeSlider.value = ratio;
-        }
+        float ratio = Mathf.Clamp01(currentTime / _limitTimeMax);
+        _timeSlider.value = ratio;
     }
 
+    /// <summary>
+    /// ゲームがスタートしたら呼ぶ
+    /// </summary>
     private void GameStart()
     {
         Display();
         _isStart = true;
     }
 
-    private void GameFinish() { /* 終了処理 */ }
+    /// <summary>
+    /// ゲームが終了したら呼ぶ
+    /// </summary>
+    private void GameFinish()
+    {
 
+    }
+
+    /// <summary>
+    /// スパチャの時のInputを呼ぶ
+    /// </summary>
     private void SuperChatTimerStart()
     {
-        if (_superChatQueue.Count > 0)
+        if (_superChatQueue.Count >= 1)
         {
-            _isChatTime = true;
-            _superChatTimer = _superChatDuration; // 5秒セット
-            
-            ChangeState(InstructionStamp.None, _sprite[0]);
-            _superChatQueue.Dequeue(); // 現在の時間を消費
-            
-            // 次のスパチャ時間をセット
-            _superChatTime = (_superChatQueue.Count > 0) ? _superChatQueue.Peek() : -1.0f;
+            ChangeState(InstructionStamp.None, _faceSprite[0]);
+            _superChatQueue.Dequeue();
+            _superChatTime = _superChatQueue.Peek();
         }
     }
 
+    /// <summary>
+    /// スパチャタイムが終わったら呼ぶ
+    /// </summary>
     private void SuperChatTimeFinish()
     {
-        _isChatTime = false;
-        Display(); // 次のスタンプを表示
-    }
-
-    private void Display()
-    {
-        InstructionStamp[] instructionStampArray = (InstructionStamp[])Enum.GetValues(typeof(InstructionStamp));
-        InstructionStamp currentStamp = instructionStampArray[UnityEngine.Random.Range(1, instructionStampArray.Length)];
-        
-        int spriteIndex = (int)currentStamp; // EnumとSpriteの順番が合っている前提
-        if (spriteIndex < _sprite.Length)
+        if (_superChatQueue.Count >= 1)
         {
-            ChangeState(currentStamp, _sprite[spriteIndex]);
+            Display();
+            _isChatTime = false;
         }
     }
 
+    /// <summary>
+    /// 顔グラの表示切り替え
+    /// </summary>
+    private void Display()
+    {
+        InstructionStamp[] instructionStampArray = (InstructionStamp[])Enum.GetValues(typeof(InstructionStamp));//顔グラを選ぶ
+        InstructionStamp currentStamp = instructionStampArray[UnityEngine.Random.Range(1, instructionStampArray.Length)];//現在の顔グラを記録    
+        if (currentStamp == InstructionStamp.TypeA)
+        {
+            ChangeState(InstructionStamp.TypeA, _faceSprite[1]);
+        }
+        else if (currentStamp == InstructionStamp.TypeB)
+        {
+            ChangeState(InstructionStamp.TypeB, _faceSprite[2]);
+        }
+        else if (currentStamp == InstructionStamp.TypeC)
+        {
+            ChangeState(InstructionStamp.TypeC, _faceSprite[3]);
+        }
+    }
+
+    /// <summary>
+    /// 状態とグラフィックを切り替える用
+    /// </summary>
+    /// <param name="ins"></param>
+    /// <param name="spr"></param>
     private void ChangeState(InstructionStamp ins, Sprite spr)
     {
         _instructionStamp = ins;
-        if (_graphicImage != null) _graphicImage.sprite = spr;
+        _faceGraphicImage.sprite = spr;
     }
+
+    /// <summary>
+    /// スタンプの正誤判定
+    /// </summary>
+    private void JudgeState(InstructionStamp ins)
+    {
+        bool result = ins == _instructionStamp ? true : false;
+        if (result)
+        {
+            _scoreManager.AddScoreStamp();
+        }
+        else
+        {
+            _scoreManager.DecreaseScore();
+        }
+    }
+}
+
+/// <summary>
+/// スタンプの状態分け
+/// </summary>
+public enum InstructionStamp
+{
+    None,
+    TypeA,
+    TypeB,
+    TypeC,
 }
