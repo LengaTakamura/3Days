@@ -16,9 +16,12 @@ public class GameSystem : MonoBehaviour
     [Header("スパチャする時間")]
     [SerializeField] private float _superChatFinishTime;
     [Header("顔グラを表示するImage")]
-    [SerializeField] private Image _graphicImage;
-    [Header("SpriteのList")]
-    [SerializeField] private Sprite[] _sprite;
+    [SerializeField] private Image _faceGraphicImage;
+    [Header("顔グラのList")]
+    [SerializeField] private Sprite[] _faceSprite;
+    [Header("吹き出しを表示するImage")]
+    [SerializeField]private Image _speechBallonImage;
+
     [Header("ScoreManager")]
     [SerializeField] private ScoreManager _scoreManager;
 
@@ -126,7 +129,7 @@ public class GameSystem : MonoBehaviour
     {
         if (_superChatQueue.Count >= 1)
         {
-            ChangeState(InstructionStamp.None, _sprite[0]);
+            ChangeState(InstructionStamp.None, _faceSprite[0]);
             _superChatQueue.Dequeue();
             _superChatTime = _superChatQueue.Peek();
         }
@@ -153,15 +156,15 @@ public class GameSystem : MonoBehaviour
         InstructionStamp currentStamp = instructionStampArray[UnityEngine.Random.Range(1, instructionStampArray.Length)];//現在の顔グラを記録    
         if (currentStamp == InstructionStamp.TypeA)
         {
-            ChangeState(InstructionStamp.TypeA, _sprite[1]);
+            ChangeState(InstructionStamp.TypeA, _faceSprite[1]);
         }
         else if (currentStamp == InstructionStamp.TypeB)
         {
-            ChangeState(InstructionStamp.TypeB, _sprite[2]);
+            ChangeState(InstructionStamp.TypeB, _faceSprite[2]);
         }
         else if (currentStamp == InstructionStamp.TypeC)
         {
-            ChangeState(InstructionStamp.TypeC, _sprite[3]);
+            ChangeState(InstructionStamp.TypeC, _faceSprite[3]);
         }
     }
 
@@ -173,7 +176,7 @@ public class GameSystem : MonoBehaviour
     private void ChangeState(InstructionStamp ins, Sprite spr)
     {
         _instructionStamp = ins;
-        _graphicImage.sprite = spr;
+        _faceGraphicImage.sprite = spr;
     }
 
     /// <summary>
