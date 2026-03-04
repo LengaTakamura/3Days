@@ -11,6 +11,7 @@ public class ChatSystem : MonoBehaviour
     [SerializeField] private float _minInterval = 0.1f;
     [SerializeField] private float _maxInterval = 3f;
     [SerializeField] private VerticalLayoutGroup _layoutGroup;
+    [SerializeField] private int _chatNum = 4;
 
     private Queue<GameObject> _activeObjects = new();
 
@@ -18,13 +19,14 @@ public class ChatSystem : MonoBehaviour
     {
         Init();
         UpdateLayOutGroup();
+        OnGameStart();
     }
 
     private void Init()
     {
-        foreach (var obj in _objList)
+        for(int i = 0; i < _chatNum ; i++)
         {
-            var chat = Instantiate(obj, _layoutGroup.transform);
+             var chat = Instantiate(_objList[UnityEngine.Random.Range(0,_objList.Count)], _layoutGroup.transform);
             _activeObjects.Enqueue(chat);
         }
     }

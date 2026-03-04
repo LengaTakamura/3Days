@@ -1194,17 +1194,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objList:
-  - {fileID: 8628062585772370689, guid: 1d05e6aa528321d40aa6f918fa8370cf, type: 3}
-  - {fileID: 5288319537709057430, guid: bf5f63dd2aa2ea546ad29457e89f3d48, type: 3}
-  - {fileID: 2127186555955513706, guid: 458708e0272e033498e2fa37790d20c5, type: 3}
-  - {fileID: 7261591473949610640, guid: 5ad75f4190ba2214d9616669ccbb82cc, type: 3}
-  - {fileID: 2746621075217398009, guid: 2f18962c67bb0cc4982483648a5598e8, type: 3}
-  - {fileID: 2484590229235801773, guid: 0e22db83206898e4b9635d0b2b1f4417, type: 3}
-  - {fileID: 1799438053184662342, guid: eac60318ce45a0e4bb1217edd448d9cc, type: 3}
-  - {fileID: 7145380393450605727, guid: 0719fcf425f69c94593d3323089bc46d, type: 3}
+  - {fileID: 3045637474538976107, guid: f165aad50635ef344a6c2b23d257f827, type: 3}
+  - {fileID: 6303107235877872809, guid: 9619ebe99ca01914d8a8cbf4e4ba4b40, type: 3}
+  - {fileID: 1977011991379404890, guid: 9fb4b03248bb17f4891d8b5030c9c1ba, type: 3}
+  - {fileID: 1753141425618935366, guid: c879161d67aa1cd448844d97e9f79f12, type: 3}
   _minInterval: 0.1
   _maxInterval: 3
   _layoutGroup: {fileID: 1889973859}
+  _chatNum: 8
 --- !u!4 &1983258085
 Transform:
   m_ObjectHideFlags: 0
