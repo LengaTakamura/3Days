@@ -14,12 +14,12 @@ public class Result : MonoBehaviour
         var score = ScoreManager.Instance.Score;
         _image = GetComponent<Image>();
 
-        if (score > 10)
+        if (score > _count[0])
         {
             _image.sprite = _sprites[0];
             _text.text = score + "great";
         }
-        else if (score > 5)
+        else if (score > _count[1])
         {
             _image.sprite = _sprites[1];
             _text.text = score + "good";
