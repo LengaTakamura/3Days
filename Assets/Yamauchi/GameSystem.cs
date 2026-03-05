@@ -34,14 +34,16 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private Text _dialogueText;
     [Header("セリフを入れる文字列")]
     [SerializeField] private string[] _dialogueString;
-    [Header("InputStamp")]
-    [SerializeField] private InputStamp _inputStamp;
-    [Header("InputBarrage")]
-    [SerializeField] private InputBarrage _inputBarrage;
     [Header("ButtonのList")]
     [SerializeField] private Button[] _buttonList;
     [Header("スパチャボタン")]
     [SerializeField] private Button _superChatButton;
+    [Header("InputStamp")]
+    [SerializeField] private InputStamp _inputStamp;
+    [Header("InputBarrage")]
+    [SerializeField] private InputBarrage _inputBarrage;
+    [Header("SoundController")]
+    [SerializeField] private SoundController _soundController;
 
     private bool _isChatTime = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
@@ -242,10 +244,12 @@ public class GameSystem : MonoBehaviour
         bool result = ins == _instructionStamp ? true : false;
         if (result)
         {
+            _soundController.RingSound(true);
             ScoreManager.Instance.AddScoreStamp();
         }
         else
         {
+            _soundController.RingSound(false);
             ScoreManager.Instance.DecreaseScore();
         }
         Display();
