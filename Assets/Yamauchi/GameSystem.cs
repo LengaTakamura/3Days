@@ -173,7 +173,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void GameFinish()
     {
-        SceneController.instance.OnClickFadeIn("Result");
+        SceneController.instance.LoadScene("Result");
     }
 
     /// <summary>
