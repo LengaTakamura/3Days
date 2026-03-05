@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f4e9270c04e854d96fef300d31a553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _untilStartTime: 3
+  _untilStartTime: 0
   _limitTime: 60
   _timeSlider: {fileID: 126717058}
   _superChatTimesList:
