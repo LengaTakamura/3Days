@@ -34,6 +34,8 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private Text _dialogueText;
     [Header("セリフを入れる文字列")]
     [SerializeField] private string[] _dialogueString;
+    [Header("スコア表示用Text")]
+    [SerializeField] private Text _scoreText;
     [Header("ButtonのList")]
     [SerializeField] private Button[] _buttonList;
     [Header("スパチャボタン")]
@@ -86,7 +88,7 @@ public class GameSystem : MonoBehaviour
         }
 
         //UI設定
-        foreach(var b in _buttonList)
+        foreach (var b in _buttonList)
         {
             b.interactable = false;
         }
@@ -94,6 +96,7 @@ public class GameSystem : MonoBehaviour
         _speechBallonImage.sprite = _speechBallonSprite[1];
         _dialogueText.text = _dialogueString[4];
         _faceGraphicImage.sprite = _faceSprite[4];//4番に普通の表情が入る？
+        _scoreText.text = ScoreManager.Instance.Score.ToString();
 
         Invoke("GameStart", _untilStartTime);
     }
@@ -246,11 +249,13 @@ public class GameSystem : MonoBehaviour
         {
             _soundController.RingSound(true);
             ScoreManager.Instance.AddScoreStamp();
+            _scoreText.text = ScoreManager.Instance.Score.ToString();
         }
         else
         {
             _soundController.RingSound(false);
             ScoreManager.Instance.DecreaseScore();
+            _scoreText.text = ScoreManager.Instance.Score.ToString();
         }
         Display();
     }
