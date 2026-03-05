@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InputBarrage : MonoBehaviour
@@ -8,6 +9,8 @@ public class InputBarrage : MonoBehaviour
     // 連打できるかどうか
     private bool _canPress = false;
     //private int _totalScore = 0;
+    
+    public Action OnClick;
 
     void Start()
     {
@@ -46,6 +49,7 @@ public class InputBarrage : MonoBehaviour
     {
         if (_canPress)
         {
+            OnClick?.Invoke();
             _count++;
         }
     }
