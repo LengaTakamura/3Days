@@ -176,13 +176,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f4e9270c04e854d96fef300d31a553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _untilStartTime: 5
-  _limitTime: 500
+  _untilStartTime: 3
+  _limitTime: 60
   _timeSlider: {fileID: 126717058}
   _superChatTimesList:
-  - 490
-  - 470
-  _superChatFinishTime: 5
+  - 50
+  - 40
+  - 30
+  - 25
+  - 18
+  - 10
+  - 3
+  _superChatFinishTime: 3
   _faceGraphicImage: {fileID: 2138824400}
   _faceSprite:
   - {fileID: 7204050452693774044, guid: 9c631d7acb723be4796097df7ce74804, type: 3}
@@ -207,10 +212,12 @@ MonoBehaviour:
   - {fileID: 550484638}
   - {fileID: 1723082321}
   _superChatButton: {fileID: 1161220470}
+  _superChatAddScore: 10000
+  _stampAddScore: 1000
+  _stampdecreaseScore: 500
   _inputStamp: {fileID: 120441824}
   _inputBarrage: {fileID: 120441825}
   _soundController: {fileID: 120441829}
-  _sceneController: {fileID: 0}
 --- !u!4 &120441827
 Transform:
   m_ObjectHideFlags: 0
@@ -251,8 +258,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 932671098}
-  _correctClip: {fileID: 8300000, guid: 9dc15f9b8e9be414da4592bad0f48bd6, type: 3}
-  _incorrectClip: {fileID: 8300000, guid: 1dcf57afcf3a5d54c9e841b2ad518d7e, type: 3}
+  _normalAudioSource: {fileID: 0}
+  _superChatAudioSource: {fileID: 1416953580}
+  _correctClip: {fileID: 0}
+  _incorrectClip: {fileID: 0}
+  _normalClip: {fileID: 0}
+  _superChatClip: {fileID: 0}
 --- !u!224 &126717057 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4498263499284018190, guid: 3f81804da3ee0994d96b703699091b22, type: 3}
@@ -1296,6 +1307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &1416953580 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6363913793355354315, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+  m_PrefabInstance: {fileID: 7862304970349913953}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1572324370
 GameObject:
   m_ObjectHideFlags: 0
