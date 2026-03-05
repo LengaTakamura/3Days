@@ -27,9 +27,9 @@ public class ScoreManager : MonoBehaviour
     /// <summary>
     /// スタンプ成功時のスコア加算
     /// </summary>
-    public void AddScoreStamp()
+    public void AddScoreStamp(int amount)
     {
-        _score++;
+       _score += amount;
     }
 
     /// <summary>
@@ -44,8 +44,8 @@ public class ScoreManager : MonoBehaviour
     /// <summary>
     /// 失敗時のスコア減算
     /// </summary>
-    public void DecreaseScore()
+    public void DecreaseScore(int amount)
     {
-        _score--;
+        _score -= amount;
     }
 }
