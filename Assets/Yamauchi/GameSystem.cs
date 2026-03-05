@@ -40,14 +40,18 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private Button[] _buttonList;
     [Header("スパチャボタン")]
     [SerializeField] private Button _superChatButton;
+    [Header("スパチャの時のスコアの加算量")]
+    [SerializeField] private int _superChatAddScore;
+    [Header("スタンプのスコアの加算量")]
+    [SerializeField] private int _stampAddScore;
+    [Header("スタンプのスコアの減算量")]
+    [SerializeField] private int _stampdecreaseScore;
     [Header("InputStamp")]
     [SerializeField] private InputStamp _inputStamp;
     [Header("InputBarrage")]
     [SerializeField] private InputBarrage _inputBarrage;
     [Header("SoundController")]
     [SerializeField] private SoundController _soundController;
-    [Header("SceneController")]
-    [SerializeField] private SceneController _sceneController;
 
     private bool _isChatTime = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
@@ -101,6 +105,9 @@ public class GameSystem : MonoBehaviour
         _dialogueText.text = _dialogueString[4];
         _faceGraphicImage.sprite = _faceSprite[4];//4番に普通の表情が入る？
         _scoreText.text = ScoreManager.Instance.Score.ToString();
+
+        //サウンド
+        _soundController.FlowSound("normal");
 
         Invoke("GameStart", _untilStartTime);
     }
@@ -159,7 +166,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void GameFinish()
     {
-        _sceneController.OnClickFadeIn("Result");
+        SceneController.instance.OnClickFadeIn("Result");
     }
 
     /// <summary>
@@ -169,6 +176,7 @@ public class GameSystem : MonoBehaviour
     {
         if (_superChatQueue.Count > 0)
         {
+            _soundController.FlowSound("superChat");
             foreach (var button in _buttonList)
             {
                 button.interactable = false;
@@ -190,6 +198,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimeFinish()
     {
+        _soundController.FlowSound("normal");
         _onEnd?.Invoke();
         Display();
         _isChatTime = false;
@@ -252,13 +261,13 @@ public class GameSystem : MonoBehaviour
         if (result)
         {
             _soundController.RingSound(true);
-            ScoreManager.Instance.AddScoreStamp();
+            ScoreManager.Instance.AddScoreStamp(_stampAddScore);
             _scoreText.text = ScoreManager.Instance.Score.ToString();
         }
         else
         {
             _soundController.RingSound(false);
-            ScoreManager.Instance.DecreaseScore();
+            ScoreManager.Instance.DecreaseScore(_stampdecreaseScore);
             _scoreText.text = ScoreManager.Instance.Score.ToString();
         }
         Display();
@@ -266,7 +275,7 @@ public class GameSystem : MonoBehaviour
 
     private void AddScoreChat()
     {
-        ScoreManager.Instance.AddScoreChat(1);
+        ScoreManager.Instance.AddScoreChat(_superChatAddScore);
         _scoreText.text = ScoreManager.Instance.Score.ToString();
     }
 
