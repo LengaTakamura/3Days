@@ -98,9 +98,16 @@ public class GameSystem : MonoBehaviour
         //UI設定
         foreach (var b in _buttonList)
         {
+            Color color = b.GetComponent<Image>().color;
+            color.a = 0.5f;
+            b.GetComponent<Image>().color = color;
             b.interactable = false;
         }
         _superChatButton.interactable = false;
+        Color Scolor = _superChatButton.GetComponent<Image>().color;
+        Scolor.a = 0.5f;
+        _superChatButton.GetComponent<Image>().color = Scolor;
+
         _speechBallonImage.sprite = _speechBallonSprite[1];
         _dialogueText.text = _dialogueString[4];
         _faceGraphicImage.sprite = _faceSprite[4];//4番に普通の表情が入る？
@@ -166,7 +173,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void GameFinish()
     {
-        SceneController.instance.OnClickFadeIn("Result");
+        SceneController.instance.LoadScene("Result");
     }
 
     /// <summary>
@@ -177,11 +184,17 @@ public class GameSystem : MonoBehaviour
         if (_superChatQueue.Count > 0)
         {
             _soundController.FlowSound("superChat");
-            foreach (var button in _buttonList)
+            foreach (var b in _buttonList)
             {
-                button.interactable = false;
+                Color color = b.GetComponent<Image>().color;
+                color.a = 0.5f;
+                b.GetComponent<Image>().color = color;
+                b.interactable = false;
             }
             _superChatButton.interactable = true;
+            Color Scolor = _superChatButton.GetComponent<Image>().color;
+            Scolor.a = 1f;
+            _superChatButton.GetComponent<Image>().color = Scolor;
 
             _onStart?.Invoke();
             _speechBallonImage.sprite = _speechBallonSprite[0];//スパチャの時の吹き出し
@@ -209,11 +222,17 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void Display()
     {
-        foreach (var button in _buttonList)
+        foreach (var b in _buttonList)
         {
-            button.interactable = true;
+            Color color = b.GetComponent<Image>().color;
+            color.a = 1f;
+            b.GetComponent<Image>().color = color;
+            b.interactable = true;
         }
         _superChatButton.interactable = false;
+        Color Scolor = _superChatButton.GetComponent<Image>().color;
+        Scolor.a = 0.5f;
+        _superChatButton.GetComponent<Image>().color = Scolor;
 
         _speechBallonImage.sprite = _speechBallonSprite[1];//普段の吹き出し
         InstructionStamp[] instructionStampArray = (InstructionStamp[])Enum.GetValues(typeof(InstructionStamp));//顔グラを選ぶ
