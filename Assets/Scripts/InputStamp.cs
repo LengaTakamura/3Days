@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class InputStamp : MonoBehaviour
 {
-    [SerializeField] private GameObject _stampPrefab; // スタンプのプレハブ
     public Action<InstructionStamp> OnStampClicked; // スタンプがクリックされたときのイベント
     private InstructionStamp _input; // 自身のInstructionStampコンポーネント
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -11,18 +10,15 @@ public class InputStamp : MonoBehaviour
     {
         _input = InstructionStamp.TypeA;// 自身のInstructionStampコンポーネントをTypeAに設定
         OnStampClicked?.Invoke(_input); //nullチェックしてスタンプがクリックされた時のイベントを呼ぶ
-        Debug.Log("Aが押された");
     }
     public void TypeB()
     {
         _input = InstructionStamp.TypeB;// 自身のInstructionStampコンポーネントをTypeBに設定
         OnStampClicked?.Invoke(_input); //nullチェックしてスタンプがクリックされた時のイベントを呼ぶ
-        Debug.Log("Bが押された");
     }
     public void TypeC()
     {
         _input = InstructionStamp.TypeC;
         OnStampClicked?.Invoke(_input);
-        Debug.Log("Cが押された");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,13 +34,22 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private Text _dialogueText;
     [Header("セリフを入れる文字列")]
     [SerializeField] private string[] _dialogueString;
+    [Header("スコア表示用Text")]
+    [SerializeField] private Text _scoreText;
+    [Header("ButtonのList")]
+    [SerializeField] private Button[] _buttonList;
+    [Header("スパチャボタン")]
+    [SerializeField] private Button _superChatButton;
     [Header("InputStamp")]
     [SerializeField] private InputStamp _inputStamp;
     [Header("InputBarrage")]
     [SerializeField] private InputBarrage _inputBarrage;
+    [Header("SoundController")]
+    [SerializeField] private SoundController _soundController;
+    [Header("SceneController")]
+    [SerializeField] private SceneController _sceneController;
 
     private bool _isChatTime = false;
-    private bool _isChatTimeFinish = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
     private bool _isStart = false;//ゲームが始まったらtrueにする
     private Queue<float> _superChatQueue = new Queue<float>();//_superChatTimesListを入れる
@@ -54,6 +64,7 @@ public class GameSystem : MonoBehaviour
     private void OnEnable()
     {
         _inputStamp.OnStampClicked += JudgeState;
+        _inputBarrage.OnClick += AddScoreChat;
         _onStart += _inputBarrage.OnStart;
         _onEnd += _inputBarrage.OnEnd;
     }
@@ -61,12 +72,14 @@ public class GameSystem : MonoBehaviour
     private void OnDisable()
     {
         _inputStamp.OnStampClicked -= JudgeState;
+        _inputBarrage.OnClick -= AddScoreChat;
         _onStart -= _inputBarrage.OnStart;
         _onEnd -= _inputBarrage.OnEnd;
     }
 
     private void Start()
     {
+        //時間設定
         _limitTimeMax = _limitTime;
         for (int i = 0; i < _superChatTimesList.Count; i++)
         {
@@ -77,6 +90,17 @@ public class GameSystem : MonoBehaviour
         {
             _superChatTime = _superChatQueue.Peek();
         }
+
+        //UI設定
+        foreach (var b in _buttonList)
+        {
+            b.interactable = false;
+        }
+        _superChatButton.interactable = false;
+        _speechBallonImage.sprite = _speechBallonSprite[1];
+        _dialogueText.text = _dialogueString[4];
+        _faceGraphicImage.sprite = _faceSprite[4];//4番に普通の表情が入る？
+        _scoreText.text = ScoreManager.Instance.Score.ToString();
 
         Invoke("GameStart", _untilStartTime);
     }
@@ -105,13 +129,14 @@ public class GameSystem : MonoBehaviour
         {
             _isChatTime = true;
             SuperChatTimerStart();
-            _superChatFinishTime -= Time.deltaTime;
-            if (_superChatFinishTime < 0 && !_isChatTimeFinish)
-            {
-                _isChatTimeFinish = true;
-                SuperChatTimeFinish();
-            }
+            StartCoroutine(SuperChatTimeWait());
         }
+    }
+
+    IEnumerator SuperChatTimeWait()
+    {
+        yield return new WaitForSeconds(_superChatFinishTime);
+        SuperChatTimeFinish();
     }
 
     private void ConvertTime(float currentTime)
@@ -134,7 +159,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void GameFinish()
     {
-
+        _sceneController.OnClickFadeIn("Result");
     }
 
     /// <summary>
@@ -142,13 +167,20 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimerStart()
     {
-        if (_superChatQueue.Count >= 1)
+        if (_superChatQueue.Count > 0)
         {
+            foreach (var button in _buttonList)
+            {
+                button.interactable = false;
+            }
+            _superChatButton.interactable = true;
+
             _onStart?.Invoke();
-            _speechBallonImage.sprite = _speechBallonSprite[1];//スパチャの時の吹き出し
-            ChangeState(InstructionStamp.None, _faceSprite[0]);
+            _speechBallonImage.sprite = _speechBallonSprite[0];//スパチャの時の吹き出し
+            ChangeState(InstructionStamp.Chat, _faceSprite[0]);
             ChangeDialogue(_dialogueString[0]);
             _superChatQueue.Dequeue();
+            if (_superChatQueue.Count == 0) return;
             _superChatTime = _superChatQueue.Peek();
         }
     }
@@ -158,12 +190,9 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void SuperChatTimeFinish()
     {
-        if (_superChatQueue.Count >= 1)
-        {
-            _onEnd?.Invoke();
-            Display();
-            _isChatTime = false;
-        }
+        _onEnd?.Invoke();
+        Display();
+        _isChatTime = false;
     }
 
     /// <summary>
@@ -171,7 +200,13 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void Display()
     {
-        _speechBallonImage.sprite = _speechBallonSprite[0];//普段の吹き出し
+        foreach (var button in _buttonList)
+        {
+            button.interactable = true;
+        }
+        _superChatButton.interactable = false;
+
+        _speechBallonImage.sprite = _speechBallonSprite[1];//普段の吹き出し
         InstructionStamp[] instructionStampArray = (InstructionStamp[])Enum.GetValues(typeof(InstructionStamp));//顔グラを選ぶ
         InstructionStamp currentStamp = instructionStampArray[UnityEngine.Random.Range(1, instructionStampArray.Length)];//現在の顔グラを記録    
         if (currentStamp == InstructionStamp.TypeA)
@@ -212,16 +247,29 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void JudgeState(InstructionStamp ins)
     {
+
         bool result = ins == _instructionStamp ? true : false;
         if (result)
         {
+            _soundController.RingSound(true);
             ScoreManager.Instance.AddScoreStamp();
+            _scoreText.text = ScoreManager.Instance.Score.ToString();
         }
         else
         {
+            _soundController.RingSound(false);
             ScoreManager.Instance.DecreaseScore();
+            _scoreText.text = ScoreManager.Instance.Score.ToString();
         }
+        Display();
     }
+
+    private void AddScoreChat()
+    {
+        ScoreManager.Instance.AddScoreChat(1);
+        _scoreText.text = ScoreManager.Instance.Score.ToString();
+    }
+
 }
 
 /// <summary>
@@ -229,7 +277,7 @@ public class GameSystem : MonoBehaviour
 /// </summary>
 public enum InstructionStamp
 {
-    None,
+    Chat,
     TypeA,
     TypeB,
     TypeC,
