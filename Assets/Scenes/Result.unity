@@ -177,7 +177,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 200
     m_FontStyle: 0
     m_BestFit: 0
@@ -352,52 +352,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040870959}
   m_CullTransparentMesh: 1
---- !u!1 &1128280749
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1128280751}
-  - component: {fileID: 1128280750}
-  m_Layer: 0
-  m_Name: SceneController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1128280750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128280749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3117003564ed9304eafc9c9d732df766, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadePanel: {fileID: 0}
-  fadeDuracion: 1
---- !u!4 &1128280751
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128280749}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.002159521, y: -0.46325427, z: -3.137008}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1228517499
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,9 +646,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprites:
-  - {fileID: -3186025588623563443, guid: d2883dc082a19bd4db424e1e30a7e87a, type: 3}
-  - {fileID: 7523896634519726554, guid: 7e38a9f3eb08187479e455069cbdeb9f, type: 3}
-  - {fileID: 2359343092907300246, guid: 9c939fb3e5811ff4c8a6d42aab56bad6, type: 3}
+  - {fileID: -3160523284986558590, guid: efb1279bc5566c945a4b5d61ae5ae2d1, type: 3}
+  - {fileID: -6470460504253458178, guid: c80ec3c4bdbaa414ea178be95b469699, type: 3}
+  - {fileID: 6937817954938267909, guid: 6333e4880f2f5c64bb3122625fc901ac, type: 3}
   _count: 0a00000005000000
   _text: {fileID: 936848641}
 --- !u!114 &1670531722
@@ -717,7 +671,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3186025588623563443, guid: d2883dc082a19bd4db424e1e30a7e87a, type: 3}
+  m_Sprite: {fileID: -3160523284986558590, guid: efb1279bc5566c945a4b5d61ae5ae2d1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -890,7 +844,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 200
     m_FontStyle: 0
     m_BestFit: 0
@@ -964,4 +918,3 @@ SceneRoots:
   - {fileID: 1228517503}
   - {fileID: 1037750460}
   - {fileID: 1814258543}
-  - {fileID: 1128280751}
