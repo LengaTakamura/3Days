@@ -176,13 +176,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f4e9270c04e854d96fef300d31a553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _untilStartTime: 10
+  _untilStartTime: 5
   _limitTime: 500
   _timeSlider: {fileID: 126717058}
   _superChatTimesList:
   - 490
   - 470
-  _superChatFinishTime: 1
+  _superChatFinishTime: 5
   _faceGraphicImage: {fileID: 2138824400}
   _faceSprite:
   - {fileID: 5533710368811819511, guid: cadb6bd52d6491d4587cdde3c2740f1f, type: 3}
@@ -196,7 +196,7 @@ MonoBehaviour:
   - {fileID: 2963614834908013637, guid: c244021b6a4aeaa40b97fc4756169765, type: 3}
   _dialogueText: {fileID: 1866427813}
   _dialogueString:
-  - "\u3059\u3071\u3061\u3083"
+  - 
   - "\u3088\u308D\u3053\u3073"
   - "\u3044\u304B\u308A"
   - "\u304B\u306A\u3057\u307F"
@@ -210,6 +210,7 @@ MonoBehaviour:
   _inputStamp: {fileID: 120441824}
   _inputBarrage: {fileID: 120441825}
   _soundController: {fileID: 120441829}
+  _sceneController: {fileID: 0}
 --- !u!4 &120441827
 Transform:
   m_ObjectHideFlags: 0
@@ -2401,6 +2402,34 @@ PrefabInstance:
     - target: {fileID: 5076489496252031564, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 120441825}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: InputBarrage, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006556033142787607, guid: 05b35937a6a1334468765d75cc1a3ab1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

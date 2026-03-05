@@ -46,6 +46,8 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private InputBarrage _inputBarrage;
     [Header("SoundController")]
     [SerializeField] private SoundController _soundController;
+    [Header("SceneController")]
+    [SerializeField] private SceneController _sceneController;
 
     private bool _isChatTime = false;
     private bool _isFinish = false;//一回だけGameFinishを呼ぶ
@@ -62,6 +64,7 @@ public class GameSystem : MonoBehaviour
     private void OnEnable()
     {
         _inputStamp.OnStampClicked += JudgeState;
+        _inputBarrage.OnClick += AddScoreChat;
         _onStart += _inputBarrage.OnStart;
         _onEnd += _inputBarrage.OnEnd;
     }
@@ -69,6 +72,7 @@ public class GameSystem : MonoBehaviour
     private void OnDisable()
     {
         _inputStamp.OnStampClicked -= JudgeState;
+        _inputBarrage.OnClick -= AddScoreChat;
         _onStart -= _inputBarrage.OnStart;
         _onEnd -= _inputBarrage.OnEnd;
     }
@@ -155,7 +159,7 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void GameFinish()
     {
-
+        _sceneController.OnClickFadeIn("Result");
     }
 
     /// <summary>
@@ -259,6 +263,13 @@ public class GameSystem : MonoBehaviour
         }
         Display();
     }
+
+    private void AddScoreChat()
+    {
+        ScoreManager.Instance.AddScoreChat(1);
+        _scoreText.text = ScoreManager.Instance.Score.ToString();
+    }
+
 }
 
 /// <summary>
