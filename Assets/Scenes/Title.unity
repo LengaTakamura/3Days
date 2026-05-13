@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadePanel: {fileID: 1915965471}
-  fadeDuracion: 5
+  fadeDuracion: 1
 --- !u!4 &604771106
 Transform:
   m_ObjectHideFlags: 0
