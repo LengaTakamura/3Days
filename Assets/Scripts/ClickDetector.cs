@@ -27,6 +27,7 @@ public class ClickDetector : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
+        _fade.gameObject.transform.position = new Vector2(0, 0);
         var c = _fade.color;
         while (_currentTime < _fadeTime)
         {
